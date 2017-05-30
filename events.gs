@@ -19,7 +19,7 @@ function onnodeChange (evt) {
   for (var id in nodes) {
     var node = nodes[id]
     if (!isEmpty(node.address) && isNaN(parseInt(node.id, 10))) {
-      sheet.getRange(node.index + 2, nodes.keys.indexesByKey['id'] + 1).setValue(node.index)
+      sheet.getRange(node.index + 2, nodes.keys.indexesByKey['id'] + 1).setValue(node.index + 2)
     }
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
       if (!isEmpty(node.location)) {
