@@ -18,7 +18,7 @@ function onnodeChange (evt) {
   var nodes = getObjects(sheet, evt.range.getHeight(), evt.range.getRow() - 2)
   for (var id in nodes) {
     var node = nodes[id]
-    if (!isEmpty(node.address) && isNaN(parseInt(node.id, 10))) {
+    if (!isEmpty(node.location) && isNaN(parseInt(node.id, 10))) {
       sheet.getRange(node.index + 2, nodes.keys.indexesByKey['id'] + 1).setValue(node.index + 2)
     }
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
