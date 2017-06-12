@@ -14,8 +14,14 @@ function onEdit (evt) {
 }
 
 function onnodeChange (evt) {
+  var row = evt.range.getRow() - 2
+  var height = evt.range.getHeight()
+  if (row < 0) {
+    row = 0
+    height -= 1
+  }
   var sheet = evt.sheet
-  var nodes = getObjects(sheet, evt.range.getHeight(), evt.range.getRow() - 2)
+  var nodes = getObjects(sheet, height, row)
   for (var id in nodes) {
     var node = nodes[id]
     if (!isEmpty(node.location) && isNaN(parseInt(node.id, 10))) {
