@@ -150,6 +150,7 @@ var toKml = { exports: {} }
       LineString: function(_) {
           return tag('LineString',
               tag('altitudeMode', 'relativeToGround') +
+              tag('extrude', 1) +
               tag('coordinates', linearring(_.coordinates)));
       },
       Polygon: function(_) {

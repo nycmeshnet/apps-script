@@ -51,6 +51,8 @@ function linksToGeography (links, nodes) {
     }
     feature.properties.name = link.id
     feature.properties.stroke = link.status === 'active' ? config.colors.active : config.colors.inactive
+    feature.properties.fill = '#000000'
+    feature.properties['fill-opacity'] = 0.35
     properties.forEach(function (key) {
       feature.properties[key] = link[key]
     })
