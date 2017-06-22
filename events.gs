@@ -30,7 +30,9 @@ function onnodeChange (evt) {
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
       var oldLatLng = node['lat/lng']
       if (!isEmpty(oldLatLng)) {
-        var parts = oldLatLng.split(',').map(part => parseFloat(part, 10))
+        var parts = oldLatLng.split(',').map(function (part) {
+          return parseFloat(part, 10)
+        })
         if (parts.length === 2) {
           sheet.getRange(node.index + 2, nodes.keys.indexesByKey['latitude'] + 1).setValue(parts[0])
           sheet.getRange(node.index + 2, nodes.keys.indexesByKey['longitude'] + 1).setValue(parts[1])
