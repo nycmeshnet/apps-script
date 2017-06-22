@@ -28,7 +28,14 @@ function onnodeChange (evt) {
       sheet.getRange(node.index + 2, nodes.keys.indexesByKey['id'] + 1).setValue(node.index + 2)
     }
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
-      if (!isEmpty(node.location)) {
+      var oldLatLng = node['lat/lng']
+      if (!isEmpty(oldLatLng)) {
+        var parts = oldLatLng.split(',').map(part => parseFloat(part, 10))
+        if (parts.length === 2) {
+          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['latitude'] + 1).setValue(parts[0])
+          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['longitude'] + 1).setValue(parts[1])
+        }
+      } else if (!isEmpty(node.location)) {
         var location = geocode(node.location)
         if (location) {
           sheet.getRange(node.index + 2, nodes.keys.indexesByKey['latitude'] + 1).setValue(location.lat)
