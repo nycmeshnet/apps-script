@@ -21,3 +21,12 @@ function convertAddressToLatLong (address) {
 function isEmpty (value) {
   return !value && value !== 0
 }
+
+if (!Array.prototype.find) {
+  Array.prototype.find = function (itr) {
+    for (var i = 0; i < this.length; i++) {
+      var object = this[i]
+      if (itr(object, i)) return object
+    }
+  }
+}
