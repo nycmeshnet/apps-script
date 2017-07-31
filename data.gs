@@ -37,10 +37,17 @@ function getObjects (sheet, limit, offset) {
       object.id = name + '-' + object.index
     }
     objects[object.id] = object
+    Object.defineProperty(object, 'setField', {
+      value: setField,
+      enumerable: false
+    })
   })
   Object.defineProperty(objects, 'keys', {
     get: function () { return keys },
     enumerable: false
   })
+  function setField (field, value) {
+    sheet.getRange(this.index + 2, keys.indexesByKey[field] + 1).setValue(value)
+  }
   return objects
 }
