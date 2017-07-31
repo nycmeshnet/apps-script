@@ -13,6 +13,18 @@ function geocode (address) {
   return response.results[0].geometry.location
 }
 
+function reverseGeocode (position) {
+  var url = 'https://maps.googleapis.com/maps/api/geocode/json?&key=' + config.mapsApiKey + '&latlng=' + position.latitude + ',' + position.longitude
+  try {
+    var response = JSON.parse(UrlFetchApp.fetch(url, {
+      method: 'GET'
+    }))
+  } catch (err) {
+    Logger.log(err)
+  }
+  return response && response.results && response.results[0]
+}
+
 function convertAddressToLatLong (address) {
   var location = geocode(address)
   return location.lat.toFixed(6) + ', ' + location.lng.toFixed(6)

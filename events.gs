@@ -45,6 +45,19 @@ function onnodeChange (evt) {
         }
       }
     }
+    if (isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
+      var address = reverseGeocode(node)
+      if (address) {
+        var neighborhood = address.address_components.find(function (component) {
+          return component.types.find(function (fieldName) {
+            return fieldName === 'neighborhood'
+          })
+        })
+        if (neighborhood) {
+          node.setField('neighborhood', neighborhood.long_name)
+        }
+      }
+    }
   }
 }
 
