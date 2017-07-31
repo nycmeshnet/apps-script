@@ -25,7 +25,7 @@ function onnodeChange (evt) {
   for (var id in nodes) {
     var node = nodes[id]
     if (!isEmpty(node.location) && isNaN(parseInt(node.id, 10))) {
-      sheet.getRange(node.index + 2, nodes.keys.indexesByKey['id'] + 1).setValue(node.index + 2)
+      node.setField('id', node.index + 2)
     }
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
       var oldLatLng = node['lat/lng']
@@ -34,14 +34,14 @@ function onnodeChange (evt) {
           return parseFloat(part, 10)
         })
         if (parts.length === 2) {
-          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['latitude'] + 1).setValue(parts[0])
-          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['longitude'] + 1).setValue(parts[1])
+          node.setField('latitude', parts[0])
+          node.setField('longitude', parts[1])
         }
       } else if (!isEmpty(node.location)) {
         var location = geocode(node.location)
         if (location) {
-          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['latitude'] + 1).setValue(location.lat)
-          sheet.getRange(node.index + 2, nodes.keys.indexesByKey['longitude'] + 1).setValue(location.lng)
+          node.setField('latitude', location.lat)
+          node.setField('longitude', location.lng)
         }
       }
     }
