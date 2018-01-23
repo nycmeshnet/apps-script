@@ -1,6 +1,6 @@
 function nodesToGeography (nodes) {
   var features = []
-  var properties = [ 'id', 'name', 'location', 'status' ]
+  var properties = [ 'id', 'status' ]
   for (var id in nodes) {
     var node = nodes[id]
     if (!node.latitude || !node.longitude) continue
