@@ -13,6 +13,7 @@ function getKeys (sheet) {
 
 function getValues (sheet, limit, offset) {
   if (!limit) limit = sheet.getLastRow() - 1
+  if (limit === 0) return []
   if (!offset) offset = 0
   return sheet.getRange(offset + 2, 1, limit, sheet.getLastColumn()).getValues()
 }
