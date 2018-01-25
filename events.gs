@@ -3,13 +3,14 @@
 
 function onEdit (evt) {
   var sheet = SpreadsheetApp.getActiveSheet()
-  var handlers = {}
-  // handler for edits to nodes table
-  handlers[config.sheets.nodes] = onnodeChange
-  var handler = handlers[sheet.getName()]
-  if (handler) {
-    evt.sheet = sheet
-    handler(evt)
+  var sheetName = sheet.getName()
+  for (var key in config.networks) {
+    var network = config.networks[key]
+    if (network.nodes === sheetName) {
+      evt.sheet = sheet
+      onnodeChange(evt)
+      break
+    }
   }
 }
 

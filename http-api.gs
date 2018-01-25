@@ -2,13 +2,15 @@ var httpApi = {
   geography: {
     GET: function (req) {
       var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+      var networkId = req.parameter.network
+      var network = config.networks[networkId || '_default_']
       var nodes = getObjects(
-        spreadsheet.getSheetByName(config.sheets.nodes),
+        spreadsheet.getSheetByName(network.nodes),
         req.parameter.limit,
         req.parameter.offset
       )
       var links = getObjects(
-        spreadsheet.getSheetByName(config.sheets.links)
+        spreadsheet.getSheetByName(network.links)
       )
       var featureCollection = {
         type: 'FeatureCollection',
