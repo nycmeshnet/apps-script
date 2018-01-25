@@ -3,7 +3,8 @@ var config = {
   networks: {
     _default_: {
       nodes: 'Form Responses 1',
-      links: 'Links'
+      links: 'Links',
+      view: 'https://nycmesh.net/panorama/$id.jpg'
     }
   },
   colors: {

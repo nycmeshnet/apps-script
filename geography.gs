@@ -1,4 +1,4 @@
-function nodesToGeography (nodes) {
+function nodesToGeography (nodes, opts) {
   var features = []
   var properties = [ 'id', 'status' ]
   for (var id in nodes) {
@@ -20,7 +20,9 @@ function nodesToGeography (nodes) {
       feature.properties.name = node.id
     }
     feature.properties['marker-color'] = node.status === 'Installed' ? config.colors.active : config.colors.inactive
-    feature.properties.view = 'https://nycmesh.net/panorama/' + node.id + '.jpg'
+    if (opts && opts.view) {
+      feature.properties.view = opts.view.replace(/\$id/g, node.id)
+    }
     properties.forEach(function (key) {
       feature.properties[key] = node[key]
     })

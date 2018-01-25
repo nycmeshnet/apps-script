@@ -14,7 +14,7 @@ var httpApi = {
       )
       var featureCollection = {
         type: 'FeatureCollection',
-        features: nodesToGeography(nodes).concat(linksToGeography(links, nodes))
+        features: nodesToGeography(nodes, network).concat(linksToGeography(links, nodes))
       }
       var format = req.parameter.format
       if (format === 'kml') {
