@@ -141,15 +141,16 @@ var toKml = { exports: {} }
   // ## Geometry Types
   //
   // https://developers.google.com/kml/documentation/kmlreference#geometry
+  var altitudeMode = 'absolute'
   var geometry = {
       Point: function(_) {
           return tag('Point',
-              tag('altitudeMode', 'relativeToGround') +
+              tag('altitudeMode', altitudeMode) +
               tag('coordinates', _.coordinates.join(',')));
       },
       LineString: function(_) {
           return tag('LineString',
-              tag('altitudeMode', 'relativeToGround') +
+              tag('altitudeMode', altitudeMode) +
               tag('extrude', 1) +
               tag('coordinates', linearring(_.coordinates)));
       },
@@ -159,12 +160,12 @@ var toKml = { exports: {} }
               inner = _.coordinates.slice(1),
               outerRing = tag('outerBoundaryIs',
                   tag('LinearRing',
-                      tag('altitudeMode', 'relativeToGround') +
+                      tag('altitudeMode', altitudeMode) +
                       tag('coordinates', linearring(outer)))),
               innerRings = inner.map(function(i) {
                   return tag('innerBoundaryIs',
                       tag('LinearRing',
-                          tag('altitudeMode', 'relativeToGround') +
+                          tag('altitudeMode', altitudeMode) +
                           tag('coordinates', linearring(i))));
               }).join('');
           return tag('Polygon', outerRing + innerRings);
@@ -172,7 +173,7 @@ var toKml = { exports: {} }
       MultiPoint: function(_) {
           if (!_.coordinates.length) return '';
           return tag('MultiGeometry',
-              tag('altitudeMode', 'relativeToGround') +
+              tag('altitudeMode', altitudeMode) +
               _.coordinates.map(function(c) {
                   return geometry.Point({ coordinates: c });
               }).join(''));
@@ -180,7 +181,7 @@ var toKml = { exports: {} }
       MultiPolygon: function(_) {
           if (!_.coordinates.length) return '';
           return tag('MultiGeometry',
-              tag('altitudeMode', 'relativeToGround') +
+              tag('altitudeMode', altitudeMode) +
               _.coordinates.map(function(c) {
                   return geometry.Polygon({ coordinates: c });
               }).join(''));
@@ -188,7 +189,7 @@ var toKml = { exports: {} }
       MultiLineString: function(_) {
           if (!_.coordinates.length) return '';
           return tag('MultiGeometry',
-              tag('altitudeMode', 'relativeToGround') +
+              tag('altitudeMode', altitudeMode) +
               _.coordinates.map(function(c) {
                   return geometry.LineString({ coordinates: c });
               }).join(''));
