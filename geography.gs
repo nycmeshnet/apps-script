@@ -60,5 +60,14 @@ function linksToGeography (links, nodes) {
     })
     features.push(feature)
   }
+  features.sort(function (a, b) {
+    return getTallestEnd(a) - getTallestEnd(b)
+  })
   return features
+}
+
+function getTallestEnd (link) {
+  var n1 = link.geometry.coordinates[0][2]
+  var n2 = link.geometry.coordinates[1][2]
+  return Math.max(n1, n2)
 }
