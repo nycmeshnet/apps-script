@@ -1,5 +1,6 @@
 var config = {
   mapsApiKey: '<your-api-key>',
+  osticketApiKey: '<your-api-key>',
   networks: {
     _default_: {
       nodes: 'Form Responses 1',
