@@ -16,9 +16,7 @@ function nodesToGeography (nodes, opts) {
       },
       properties: {}
     }
-    if (!node.name) {
-      feature.properties.name = node.id
-    }
+    feature.properties.name = node.id
     feature.properties['marker-color'] = node.status === 'Installed' ? config.colors.active : config.colors.inactive
     if (opts && opts.view) {
       feature.properties.view = opts.view.replace(/\$id/g, node.id)
