@@ -3,15 +3,12 @@
 
 function onEdit (evt) {
   var sheet = SpreadsheetApp.getActiveSheet()
-  var sheetName = sheet.getName()
-  for (var key in config.networks) {
-    var network = config.networks[key]
-    if (network.nodes === sheetName) {
-      evt.sheet = sheet
-      onnodeChange(evt)
-      break
-    }
-  }
+  var keys = getKeys(sheet).indexesByKey
+  if (keys.location === undefined) return
+  if (keys.latitude === undefined) return
+  if (keys.longitude === undefined) return
+  evt.sheet = sheet
+  onnodeChange(evt)
 }
 
 function onnodeChange (evt) {

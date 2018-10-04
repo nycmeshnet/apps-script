@@ -3,7 +3,18 @@ var httpApi = {
     GET: function (req) {
       var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
       var networkId = req.parameter.network
-      var network = config.networks[networkId || '_default_']
+      var network = null
+      if (networkId) {
+        network = config.networks[networkId]
+        if (!network) {
+          network = {
+            nodes: networkId,
+            links: networkId + '-links'
+          }
+        }
+      } else {
+        network = config.networks._default_
+      }
       var nodes = getObjects(
         spreadsheet.getSheetByName(network.nodes),
         req.parameter.limit,
