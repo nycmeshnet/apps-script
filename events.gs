@@ -3,10 +3,18 @@
 
 function onEdit (evt) {
   var sheet = SpreadsheetApp.getActiveSheet()
-  var keys = getKeys(sheet).indexesByKey
-  if (keys.location === undefined) return
-  if (keys.latitude === undefined) return
-  if (keys.longitude === undefined) return
+  const network = config.networks._default_
+  const nodes = network.nodes
+  const links = network.links
+  const sectors = network.sectors
+  
+  if ([nodes, links, sectors].indexOf(sheet.getName()) === -1) {
+    return
+  } 
+  //var keys = getKeys(sheet).indexesByKey
+  //if (keys.location === undefined) return
+  //if (keys.latitude === undefined) return
+  //if (keys.longitude === undefined) return
   evt.sheet = sheet
   onnodeChange(evt)
 }
@@ -56,6 +64,17 @@ function onnodeChange (evt) {
         }
       }
     }
+  }
+  var cache = CacheService.getDocumentCache()
+  cache.put('changed', true, 60 * 35)
+}
+
+function oneveryTenMintues () {
+  var cache = CacheService.getDocumentCache()
+  var changed = cache.get('changed')
+  if (changed) {
+    cache.remove('changed')
+    webhooks.dispatch('change')
   }
 }
 

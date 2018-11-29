@@ -1,4 +1,4 @@
-function respondToFormSubmit(e) {
+function respondToJoinFormSubmit(e) {
   var addonTitle = 'My Add-on Title'
   var props = PropertiesService.getDocumentProperties()
   var authInfo = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL)
@@ -92,7 +92,8 @@ function respondToFormSubmit(e) {
     //json setup for post
     var url = "https://support.nycmesh.net/api/http.php/tickets.json"
     var data = {
-      "node": node,
+      "node": id,
+      "userNode": id,
       "email": email,
       "name": name,
       "subject": subject, 
@@ -101,12 +102,12 @@ function respondToFormSubmit(e) {
       "location": location,
       "rooftop": rooftop,
       "ncl": ncl,
-      "ip": "107.178.*.*"
+      "ip": "*.*.*.*"
     };
     var payload = JSON.stringify(data)
     
     var header = {
-      "X-API-Key": config.osticketApiKey
+      "X-API-Key": config.osticket.APIKey
     };
 
     var options = {
@@ -115,14 +116,30 @@ function respondToFormSubmit(e) {
       "muteHttpExceptions": true,
       "payload": payload
     };
-    var response = UrlFetchApp.fetch(url, options)
+    
+    try {
+      //osticket api call
+      var response = UrlFetchApp.fetch(url, options)
+      
+      //API error reporting
+      if (/API/.test(response)) {    //regex search
+          MailApp.sendEmail(config.osticket.Admin,
+                    'API Error - New Node - osticket.gs',
+                    'API problem: ' + response);
+      } 
+    //general exception reporting
+    } catch (e) {
+        MailApp.sendEmail(config.osticket.Admin,
+                    'Error caught - New Node: osticket.gs',
+                    e);
+    }
     
     //str = JSON.stringify(options, null, 4)
     //Logger.log('options' + str)
     //str = JSON.stringify(payload, null, 4)
     //Logger.log('payload: ' + str)
     //Logger.log("\n\r")
-    Logger.log(response)
+    //Logger.log(response)
 
   }
 }

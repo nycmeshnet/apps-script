@@ -42,3 +42,15 @@ if (!Array.prototype.find) {
     }
   }
 }
+
+function reduceAltitude () {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+  var sheet = spreadsheet.getSheetByName('Form Responses 1')
+  var nodes = getObjects(sheet, 9999, 0)
+  for (var id in nodes) {
+    var node = nodes[id]
+    if (typeof node.altitude === 'number') {
+      node.setField('altitude', node.altitude - 3)
+    }
+  }
+}
