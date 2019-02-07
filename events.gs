@@ -72,7 +72,7 @@ function checkGeocode (evt) {
         }
       }
     }
-    if (isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
+    if (evt.keys.neighborhood && isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
       var address = reverseGeocode(node)
       if (address) {
         var neighborhood = address.address_components.find(function (component) {
