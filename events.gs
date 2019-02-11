@@ -20,7 +20,7 @@ function onEdit (evt) {
   }
 
   // ensure lat / lng
-  if (evt.keys.location && !isEmpty(evt.keys.latitude) && !isEmpty(evt.keys.longitude)) {
+  if (!isEmpty(evt.keys.location) && !isEmpty(evt.keys.latitude) && !isEmpty(evt.keys.longitude)) {
     checkGeocode(evt)
   }
 
@@ -72,7 +72,7 @@ function checkGeocode (evt) {
         }
       }
     }
-    if (evt.keys.neighborhood && isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
+    if (!isEmpty(evt.keys.neighborhood) && isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
       var address = reverseGeocode(node)
       if (address) {
         var neighborhood = address.address_components.find(function (component) {
