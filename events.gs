@@ -3,36 +3,57 @@
 
 function onEdit (evt) {
   var sheet = SpreadsheetApp.getActiveSheet()
-  const network = config.networks._default_
-  const nodes = network.nodes
-  const links = network.links
-  const sectors = network.sectors
-  
-  if ([nodes, links, sectors].indexOf(sheet.getName()) === -1) {
-    return
-  } 
-  //var keys = getKeys(sheet).indexesByKey
-  //if (keys.location === undefined) return
-  //if (keys.latitude === undefined) return
-  //if (keys.longitude === undefined) return
-  evt.sheet = sheet
-  onnodeChange(evt)
-}
-
-function onnodeChange (evt) {
   var row = evt.range.getRow() - 2
   var height = evt.range.getHeight()
   if (row < 0) {
     row = 0
     height -= 1
   }
-  var sheet = evt.sheet
-  var nodes = getObjects(sheet, height, row)
-  for (var id in nodes) {
-    var node = nodes[id]
-    if (!isEmpty(node.location) && isNaN(parseInt(node.id, 10))) {
-      node.setField('id', node.index + 2)
+  evt = {
+    keys: getKeys(sheet).indexesByKey,
+    objects: getObjects(sheet, height, row)
+  }
+
+  // ensure ids
+  if (!isEmpty(evt.keys.id)) {
+    checkId(evt)
+  }
+
+  // ensure lat / lng
+  if (!isEmpty(evt.keys.location) && !isEmpty(evt.keys.latitude) && !isEmpty(evt.keys.longitude)) {
+    checkGeocode(evt)
+  }
+
+  // set changed flag to trigger website deploy
+  const network = config.networks._default_
+  const nodes = network.nodes
+  const links = network.links
+  const sectors = network.sectors
+  if ([nodes, links, sectors].indexOf(sheet.getName()) > -1) {
+    var cache = CacheService.getDocumentCache()
+    cache.put('changed', true, 60 * 35)
+  }
+}
+
+function checkId (evt) {
+  for (var id in evt.objects) {
+    var object = evt.objects[id]
+    var empty = true
+    for (var prop in object) {
+      if (!isEmpty(object[prop])) {
+        empty = false
+        break
+      }
     }
+    if (!empty && isNaN(parseInt(object.id, 10))) {
+      object.setField('id', object.index + 2)
+    }
+  }
+}
+
+function checkGeocode (evt) {
+  for (var id in evt.objects) {
+    var node = evt.objects[id]
     if (isEmpty(node.latitude) || isEmpty(node.longitude)) {
       var oldLatLng = node['lat/lng']
       if (!isEmpty(oldLatLng)) {
@@ -51,7 +72,7 @@ function onnodeChange (evt) {
         }
       }
     }
-    if (isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
+    if (!isEmpty(evt.keys.neighborhood) && isEmpty(node.neighborhood) && !isEmpty(node.latitude) && !isEmpty(node.longitude)) {
       var address = reverseGeocode(node)
       if (address) {
         var neighborhood = address.address_components.find(function (component) {
@@ -65,8 +86,6 @@ function onnodeChange (evt) {
       }
     }
   }
-  var cache = CacheService.getDocumentCache()
-  cache.put('changed', true, 60 * 35)
 }
 
 function oneveryTenMintues () {
