@@ -30,6 +30,21 @@ function convertAddressToLatLong (address) {
   return location.lat.toFixed(6) + ', ' + location.lng.toFixed(6)
 }
 
+function testAddressToLatLong () {
+  var location = geocode('375 Pearl Street, Manhattan, New York City')
+  return location.lat.toFixed(6) + ', ' + location.lng.toFixed(6)
+}
+
+function convertAddressToLat (address) {
+   var location = geocode(address)
+  return location.lat.toFixed(6)
+}
+
+function convertAddressToLong (address) {
+  var location = geocode(address)
+  return location.lng.toFixed(6)
+}
+
 function isEmpty (value) {
   return !value && value !== 0
 }
