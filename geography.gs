@@ -53,7 +53,7 @@ function linksToGeography (links, nodes) {
     feature.properties.name = link.id
     feature.properties.stroke = link.status === 'active' ? config.colors.active : config.colors.inactive
     feature.properties.fill = '#000000'
-    feature.properties['fill-opacity'] = 0.0
+    feature.properties['fill-opacity'] = 0
     properties.forEach(function (key) {
       feature.properties[key] = link[key]
     })
@@ -78,6 +78,7 @@ function nodesToJSON(nodes) {
       requestDate: node.timestamp && node.timestamp.getTime ? node.timestamp.getTime() : undefined,
       installDate: node.installdate && node.installdate.getTime ? node.installdate.getTime() : undefined,
       abandonDate: node.abandondate && node.abandondate.getTime ? node.abandondate.getTime() : undefined,
+      address: node.location,
       coordinates: [
         node.longitude,
         node.latitude,
